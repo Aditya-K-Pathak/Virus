@@ -28,6 +28,6 @@ class main:
             data = self.cryptograph.decrypt(self.file_ops.read_file(file))
             return self.file_ops.write_file(file, data.decode())
 
-if __name__ == "main":
+if __name__ == "__main__":
     m = main()
     m.encrypt()
